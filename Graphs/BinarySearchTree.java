@@ -58,6 +58,79 @@ class BinarySearchTree {
 		return findRecursive(this.root, value);
 	}
 
+	private int findSmallestNode(Node root) {
+		return root.left == null ? root.value : findSmallestNode(root.left);
+	}
+
+	private Node deleteRecursive(Node current, int value) {
+		if(current.value == value) {
+			// code for deletion
+			if(current.left != null && current.right != null) {
+				// if node has 2 child nodes
+				int smallest = findSmallestNode(current.right);
+				current.value = smallest;
+				current.right = deleteRecursive(current.right, smallest);
+				return current;			
+			}
+			if(current.left != null && current.right == null) {
+				return current.left;
+			}			
+			if(current.right != null && current.left == null) {
+				return current.right;
+			}			
+			if(current.left == null && current.right == null) {
+				return null;
+			}
+		}
+		if(current == null) {
+			return null;
+		}
+		if(value < current.value) {
+			current.left = deleteRecursive(current.left, value);
+		}
+		if(value > current.value) {
+			current.right = deleteRecursive(current.right, value);
+		}
+		return null;
+	}
+
+	Node delete(int value) {
+		return deleteRecursive(root, value);
+	}
+
+	boolean BFS(int value) {
+
+		// ArrayList<Boolean> visited = new ArrayList<Boolean>();
+		LinkedList<Node> q = new LinkedList<Node>();
+		q.add(root);
+
+		while(!q.isEmpty()) {
+			Node current = q.poll();
+			System.out.println(current.value + " ");
+			if(current.value == value) {
+				return true;
+			}
+			// visited.add(current.value, true);
+
+			if(current.left != null) {
+				q.add(current.left);	
+			}
+
+			if(current.right != null) {
+				q.add(current.right);	
+			}
+
+			// if(!visited.contains(current.left.value)) {
+			// 	q.add(current.left);
+			// }
+			// if(!visited.contains(current.left.value)) {
+			// 	q.add(current.right);
+			// }
+		}
+		return false;
+	}
+
+
 	public static void main(String[] args) {
 
 		BinarySearchTree b = new BinarySearchTree(5);
@@ -68,7 +141,12 @@ class BinarySearchTree {
 		b.add(7);
 
 		System.out.println(b.find(7));
-		System.out.println(b.find(14));
+
+		b.delete(7);
+
+		System.out.println(b.find(7));
+
+		System.out.println(b.BFS(9));
 	}
 
 }
