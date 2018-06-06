@@ -12,9 +12,11 @@ public class MaxPaths{
 			}
 		}
 		printArray(grid);
-		System.out.println(maxPathsMain(grid));
+		// System.out.println(maxPathsMain(grid));
+		System.out.println(maxPathsDP(grid));
 	}
 
+	// caller function for recursive solution
 	static int maxPathsMain(int[][] grid) {
 		return maxPaths(grid, 0 ,0);
 	}
@@ -42,6 +44,31 @@ public class MaxPaths{
 			}
 			System.out.println("");
 		}	
+	}
+
+	// DP Solution - builds DP table from the bottom up and returns the [0][0] element
+	static int maxPathsDP(int[][] grid) {
+		int n = grid.length;
+		int m = grid[0].length;
+
+		int[][] dpTable = new int[n][m];
+
+		for(int i = n-1; i >= 0; --i) {
+			for(int j = m-1; j >= 0; --j) {
+				int currVal = grid[i][j];
+				if(i == n-1 && j == m-1) {
+					dpTable[i][j] = grid[i][j];
+				} else if(i == n-1) {
+					dpTable[i][j] = currVal + dpTable[i][j+1];
+				} else if(j == m-1) {
+					dpTable[i][j] = currVal + dpTable[i+1][j];
+				} else {
+					dpTable[i][j] = currVal + Math.max(dpTable[i+1][j], dpTable[i][j+1]);
+				}
+
+			}
+		}
+		return dpTable[0][0];
 	}
 
 }
