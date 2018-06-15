@@ -130,6 +130,53 @@ class BinarySearchTree {
 		return false;
 	}
 
+	static boolean isBST(Node root) {
+        ArrayList<Integer> flat = new ArrayList<Integer>();
+        flat = BFT(root, flat);
+        return checkBST(flat);
+    }
+    
+    static ArrayList<Integer> BFT(Node root, ArrayList<Integer> arr) {
+        Queue<Node> queue = new LinkedList<Node>();
+        queue.add(root);
+        
+        while(queue.peek() != null) {
+            Node curr = queue.poll();
+            arr.add(curr.value);
+            queue.add(curr.left);
+            queue.add(curr.right);
+        }
+
+        return arr;
+    }
+    
+    static boolean checkBST(ArrayList<Integer> arr) {
+
+    	for(int j = 0; j < arr.size(); j++) {
+    		System.out.print(arr.get(j));
+    	}
+
+        for(int i = 0; i < arr.size(); i++) {
+        	int leftIndex = 2*i + 1;
+        	int rightIndex = 2*i + 2;
+
+			// check if the left child is smaller
+        	if(leftIndex < arr.size()) {
+        		if (arr.get(leftIndex) > arr.get(i)) {
+        			return false;
+        		}
+        	}
+
+        	// check if the right child is greater
+        	if(rightIndex < arr.size()) {
+        		if (arr.get(rightIndex) < arr.get(i)) {
+        			return false;
+        		}
+        	}
+        }
+        return true;
+    }
+
 
 	public static void main(String[] args) {
 
@@ -138,15 +185,20 @@ class BinarySearchTree {
 		b.add(1);
 		b.add(9);
 		b.add(2);
+		b.add(11);
+		b.add(55);
+		b.add(23);
+		b.add(6);
+		b.add(8);
+		b.add(2);
 		b.add(7);
 
 		System.out.println(b.find(7));
-
 		b.delete(7);
-
 		System.out.println(b.find(7));
-
 		System.out.println(b.BFS(9));
+
+		System.out.println("Is BST: "+isBST(b.root));
 	}
 
 }
