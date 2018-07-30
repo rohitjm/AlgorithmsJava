@@ -13,7 +13,7 @@ public class MoveLettersLeft {
 
 		char[] charArr = str.toCharArray();
 
-		int ptr1 = 0; // fast pointer only stops at letters
+		int ptr1 = 0; // fast pointer only stops at letters make the initial value the first letter
 		while(ptr1 < charArr.length && !Character.isLetter(charArr[ptr1])) {
 			ptr1++;
 		}
