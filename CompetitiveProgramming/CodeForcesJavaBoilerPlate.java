@@ -29,7 +29,7 @@ public class Main{
         arr[i] = sc.nextInt();
      }
 
-	 out.println(magicSubset(n, arr));
+	   out.println(magicSubset(n, arr));
      out.close();
    }
 
