@@ -24,18 +24,54 @@ public class FindLongestPathDAG {
 		adjList.put(6, values6);
 		adjList.put(7, values7);
 
-		List<Integer> result = findLongestPath(adjList);
+		// List<Integer> result = findLongestPath(adjList);
+		System.out.println("Longest Path: " + findLongestPath(adjList));
 		// printArr(result);
 	}
 
-	static List<Integer> findLongestPath(HashMap<Integer, Integer[][]> adjList) {
+	static Integer findLongestPath(HashMap<Integer, Integer[][]> adjList) {
+	// static List<Integer> findLongestPath(HashMap<Integer, Integer[][]> adjList) {
 
 		// Do a topological sort and and get the ordering array
 		Integer[] ordering = topSort(adjList);
 		printArr(ordering);
 
-		List<Integer> res = new ArrayList<Integer>();
-		return res;
+		// build a map of the Nodes and the shortest path to them
+		// Keep in mind for the longest path we must flip their signs
+
+		HashMap<Integer, Integer> pathLens = new HashMap<Integer, Integer>();
+		for(Map.Entry<Integer, Integer[][]> entry : adjList.entrySet()) {
+			pathLens.put(entry.getKey(), Integer.MAX_VALUE);
+		}
+
+		pathLens.put(ordering[0], 0);
+
+		Integer[][] edges;
+		Integer node;
+		Integer weight;
+		Integer currWeight;
+		Integer nodeWeight;
+		Integer currLow = Integer.MAX_VALUE;
+
+		for(int i = 0; i < ordering.length; i++) {
+			edges = adjList.get(ordering[i]);
+			nodeWeight = pathLens.get(ordering[i]);
+			for(int j = 0; j < edges.length; j++) {
+				node = edges[j][0];
+				weight = nodeWeight + edges[j][1] * -1;
+
+				currWeight = pathLens.get(node);
+				if(weight < currWeight) {
+					pathLens.put(node, weight);	
+				}
+
+				if(weight < currLow) {
+					currLow = weight;
+				}				
+			}
+		}
+
+		return currLow*-1;
 	}
 
 	static Integer[] topSort(HashMap<Integer, Integer[][]> adjList) {
